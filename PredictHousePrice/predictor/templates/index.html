@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Predict House Price</h1>
+        <form action="{% url 'upload_csv' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- CSV file upload -->
+            <label for="csvfile">Select a CSV file: </label>
+            <input type="file" id="csvfile" name="csvfile" accept=".csv" required><br><br>
+            
+            <!-- Radio button input -->
+            <p>Choose model</p>
+            <input type="radio" id="liregg" name="type" value="Linear Regression">
+            <label for="liregg">Linear Regression</label><br>
+            <input type="radio" id="decitree" name="type" value="Decision Tree">
+            <label for="decitree">Decision Tree</label><br>
+
+            <!-- Submit -->
+            <input type="submit" value="Upload">
+        </form>
+    </body>
+</html>
