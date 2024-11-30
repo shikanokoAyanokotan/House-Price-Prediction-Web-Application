@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info:
+  title: House Price Prediction API
+  version: 1.0.0
+  description: |-
+    An API that allows users to upload a CSV file containing house features and prices, along with a choice 
+    of prediction model (Linear Regression or Decision Tree). The API processes the file, predicts house 
+    prices, and returns the results as a table in an HTTP response.
+paths:
+  /upload_csv:
+    post:
+      summary: Upload a CSV file and choose a prediction model
+      description: |-
+        Accepts a CSV file containing house data and a model selection (Linear Regression or Decision Tree). 
+        The API processes the file, runs the prediction, and returns the results as a table.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The CSV file containing house data.
+                model:
+                  type: string
+                  enum: [Linear Regression, Decision Tree]
+                  description: The prediction model to use.
+              required:
+                - file
+                - model
+      responses:
+        '200':
+          description: Prediction results successfully generated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  prediction_table:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID of the house.
+                        SalePrice:
+                          type: number
+                          format: float
+                          description: Predicted price of the house.
+        '400':
+          description: Invalid input, such as a missing file or invalid model selection.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+        '500':
+          description: Internal server error during prediction processing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
